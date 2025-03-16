@@ -57,9 +57,9 @@ The ExpensifyX is built using modern web technologies:
 ---
 
 ## 📸 Screenshots  
+![sign up page](image.png)
 
-
-
+![Home page](image-1.png)
 ---
 
 ## 📥 Installation & Usage  
@@ -69,7 +69,7 @@ Follow these steps to run the project locally:
 ### 1️⃣ **Clone the Repository**  
 ```sh
 git clone https://github.com/Chandramouli2022/expensifyx.git
-cd expense-tracker
+cd expensifyx
 ```
 
 ### 2️⃣ **Install Dependencies**  
