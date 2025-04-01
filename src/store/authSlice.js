@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialAuthState = {
-  isAuthenticated: localStorage.getItem("isAuthenticated"),
+  isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
   idToken: localStorage.getItem("idToken"),
   email: localStorage.getItem("email"),
   apiKey: "AIzaSyAEKPsA7IdUYTtRqYIWAnr4HdGv_X_GxSg",
@@ -15,7 +15,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {
-    login: (state, action) => {  
+    login: (state, action) => {
       const { idToken, email } = action.payload;
       localStorage.setItem("idToken", idToken);
       localStorage.setItem("email", email);
@@ -28,7 +28,7 @@ const authSlice = createSlice({
       localStorage.removeItem("idToken");
       localStorage.removeItem("email");
       localStorage.removeItem("isAuthenticated");
-      localStorage.removeItem("premium")
+      localStorage.removeItem("premium");
       state.isAuthenticated = false;
       state.idToken = "";
       state.email = "";

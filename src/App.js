@@ -16,7 +16,8 @@ import { useEffect } from "react";
 import Mainnav from "./Pages/Mainnav";
 
 const App = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  var isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  console.log(typeof isAuthenticated);
   const email = useSelector((state) => state.auth.email);
   const userEmail = isAuthenticated ? email.replace(/[.]/g, "") : undefined;
   const dispatch = useDispatch();
@@ -39,14 +40,19 @@ const App = () => {
         const responses = await Promise.all(requests);
         const { data: expensesData } = responses[1];
         const { data: incomeData } = responses[0];
+        console.log(responses[0]);
         for (const key in expensesData) {
           const obj = { id: key, ...expensesData[key] };
           dispatch(addExpense({ expenseItem: obj }));
         }
+        console.log("Income Data:", incomeData);
         dispatch(setTotalExpenses());
         for (const key in incomeData) {
           const { totalIncome } = { ...incomeData[key] };
-          dispatch(addIncome(+totalIncome));
+          const obj = { id: key, money: totalIncome, ...incomeData[key] };
+          const validIncome = Number(totalIncome) || 0; // Ensures a valid number
+          dispatch(addIncome(validIncome));
+          dispatch(addExpense({ expenseItem: obj }));
         }
       } catch (error) {
         alert("There was an error");
@@ -67,27 +73,28 @@ const App = () => {
     <div style={containerStyle}>
       {isAuthenticated && <Mainnav />}
       <Switch>
-        <Route path="/" exact>
-          <Redirect to="/auth" />
+        <Route path='/' exact>
+          <Redirect to='/auth' />
         </Route>
-        <Route path="/auth">
+        <Route path='/auth'>
+          {isAuthenticated && <Redirect to='/Welcome' />}
           <Auth />
         </Route>
         {isAuthenticated && (
-          <Route Route path="/welcome">
+          <Route Route path='/welcome'>
             <Welcome />
           </Route>
         )}
         {isAuthenticated && (
-          <Route path="/profileupdate">
+          <Route path='/profileupdate'>
             <ProfileUpdate />
           </Route>
         )}
 
         {isAuthenticated ? (
-          <Redirect from="*" to="/welcome" />
+          <Redirect from='*' to='/welcome' />
         ) : (
-          <Redirect from="*" to="/" />
+          <Redirect from='*' to='/' />
         )}
       </Switch>
     </div>
